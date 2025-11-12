@@ -114,7 +114,7 @@ A gamified mobile learning platform for Python programming, built with Flutter a
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
+   git clone [<repository-url>](https://github.com/qulDev/codedly/)
    cd codedly
    ```
 
