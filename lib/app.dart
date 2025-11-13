@@ -44,32 +44,58 @@ class CodedlyApp extends ConsumerWidget {
   }
 }
 
-/// Auth gate to handle routing based on authentication state
-class AuthGate extends ConsumerWidget {
+/// Auth gate to handle routing (Static for now)
+class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider);
+  Widget build(BuildContext context) {
+    const AuthStatus fakeStatus = AuthStatus.authenticated; 
+    const bool onboardingCompleted = true;
 
-    return switch (authState.status) {
-      AuthStatus.initial ||
-      AuthStatus.loading => const Scaffold(body: LoadingIndicator()),
-      AuthStatus.authenticated => _buildAuthenticatedRoute(authState),
-      AuthStatus.unauthenticated || AuthStatus.error => const SignInScreen(),
-    };
-  }
-
-  Widget _buildAuthenticatedRoute(AuthState authState) {
-    final user = authState.user;
-    if (user == null) return const SignInScreen();
-
-    // Show onboarding if not completed
-    if (!user.onboardingCompleted) {
-      return const OnboardingScreen();
+    switch (fakeStatus) {
+      case AuthStatus.initial:
+      case AuthStatus.loading:
+        return const Scaffold(body: LoadingIndicator());
+      case AuthStatus.authenticated:
+        if (!onboardingCompleted) {
+          return const OnboardingScreen();
+        } else {
+          return const HomeScreen();
+        }
+      case AuthStatus.unauthenticated:
+      case AuthStatus.error:
+        return const SignInScreen();
     }
-
-    // Show home screen
-    return const HomeScreen();
   }
 }
+
+/// Auth gate to handle routing based on authentication state
+// class AuthGate extends ConsumerWidget {
+//   const AuthGate({super.key});
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final authState = ref.watch(authProvider);
+
+//     return switch (authState.status) {
+//       AuthStatus.initial ||
+//       AuthStatus.loading => const Scaffold(body: LoadingIndicator()),
+//       AuthStatus.authenticated => _buildAuthenticatedRoute(authState),
+//       AuthStatus.unauthenticated || AuthStatus.error => const SignInScreen(),
+//     };
+//   }
+
+//   Widget _buildAuthenticatedRoute(AuthState authState) {
+//     final user = authState.user;
+//     if (user == null) return const SignInScreen();
+
+//     // Show onboarding if not completed
+//     if (!user.onboardingCompleted) {
+//       return const OnboardingScreen();
+//     }
+
+//     // Show home screen
+//     return const HomeScreen();
+//   }
+// }
