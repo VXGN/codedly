@@ -24,6 +24,17 @@ void main() async {
 
   // Initialize dependency injection
   await configureDependencies();
-
-  runApp(const ProviderScope(child: CodedlyApp()));
+  
+  runApp(ProviderScope(
+      overrides: [
+        authProvider.overrideWithValue(
+          AuthState(
+            status: AuthStatus.authenticated,
+            user: UserModel(onboardingCompleted: true),
+          ),
+        ),
+      ],
+      child: const CodedlyApp(),
+    ),
+  );
 }
