@@ -169,6 +169,10 @@ int calculateLevel(int totalXp) {
   return ((-1 + sqrt(1 + 8 * totalXp / 100)) ~/ 2) + 1;
 }
 ```
+if injection fail, please del
+```shell
+flutter pub run build_runner build --delete-conflicting-outputs
+```
 
 ## 📝 Next Steps
 
