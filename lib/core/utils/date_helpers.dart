@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 /// Date and time utilities for Codedly
 class DateHelpers {
   DateHelpers._();
@@ -19,23 +20,7 @@ class DateHelpers {
   }
 
   /// Formats date as "DD MMM YYYY" (e.g., "15 Jan 2025")
-  static String formatDate(DateTime date) {
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    return '${date.day} ${months[date.month - 1]} ${date.year}';
-  }
+  static String formatDate(DateTime date) => DateFormat('d MMM yyyy').format(date);
 
   /// Formats date as "DD/MM/YYYY"
   static String formatDateShort(DateTime date) {
