@@ -12,24 +12,36 @@ import 'core/di/injection.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load environment variables
-  await dotenv.load(fileName: '.env');
+  try {
+    // Load environment variables
+    await dotenv.load(fileName: '.env');
 
-  // Initialize Hive for local storage
-  await Hive.initFlutter();
+    // Initialize Hive for local storage
+    await Hive.initFlutter();
 
-  // Initialize Supabase
-  await Supabase.initialize(
-    url: dotenv.env['SUPABASE_URL']!,
-    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
-  );
+    // Initialize Supabase
+    await Supabase.initialize(
+      url: dotenv.env['SUPABASE_URL']!,
+      anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+    );
 
-  // Initialize dependency injection
-  await configureDependencies();
-  
-  runApp(
-    const ProviderScope(
-      child: CodedlyApp(),
-    ),
-  );
+    // Initialize dependency injection
+    await configureDependencies();
+
+    runApp(
+      const ProviderScope(
+        child: CodedlyApp(),
+      ),
+    );
+  } catch (e) {
+    runApp(
+      const MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: Text('Error initializing app: ${e.toString()}'),
+          ),
+        ),
+      ),
+    );
+  }
 }
