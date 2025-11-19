@@ -44,7 +44,6 @@ class CodedlyApp extends ConsumerWidget {
   }
 }
 
-/// Auth gate to handle routing (Static for now)
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 
@@ -54,7 +53,7 @@ class AuthGate extends StatelessWidget {
     const bool onboardingCompleted = true;
 
     if (passwordEntered) {
-      return const HomeScreen();
+      return _buildAuthenticatedRoute(onboardingCompleted);
     }
 
     const AuthStatus fakeStatus = AuthStatus.authenticated;
@@ -64,17 +63,52 @@ class AuthGate extends StatelessWidget {
       case AuthStatus.loading:
         return const Scaffold(body: LoadingIndicator());
       case AuthStatus.authenticated:
-        if (!onboardingCompleted) {
-          return const OnboardingScreen();
-        } else {
-          return const HomeScreen();
-        }
+        return _buildAuthenticatedRoute(onboardingCompleted);
       case AuthStatus.unauthenticated:
       case AuthStatus.error:
         return const SignInScreen();
     }
   }
+  Widget _buildAuthenticatedRoute(bool onboardingCompleted) {
+    if (!onboardingCompleted) {
+      return const OnboardingScreen();
+    }
+    return const HomeScreen();
+  }
 }
+
+
+/// Auth gate to handle routing (Static for now)
+// class AuthGate extends StatelessWidget {
+//   const AuthGate({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     const bool passwordEntered = true;
+//     const bool onboardingCompleted = true;
+
+//     if (passwordEntered) {
+//       return const HomeScreen();
+//     }
+
+//     const AuthStatus fakeStatus = AuthStatus.authenticated;
+
+//     switch (fakeStatus) {
+//       case AuthStatus.initial:
+//       case AuthStatus.loading:
+//         return const Scaffold(body: LoadingIndicator());
+//       case AuthStatus.authenticated:
+//         if (!onboardingCompleted) {
+//           return const OnboardingScreen();
+//         } else {
+//           return const HomeScreen();
+//         }
+//       case AuthStatus.unauthenticated:
+//       case AuthStatus.error:
+//         return const SignInScreen();
+//     }
+//   }
+// }
 
 /// Auth gate to handle routing based on authentication state
 // class AuthGate extends ConsumerWidget {
