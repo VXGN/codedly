@@ -50,8 +50,14 @@ class AuthGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const AuthStatus fakeStatus = AuthStatus.authenticated; 
+    const bool passwordEntered = true;
     const bool onboardingCompleted = true;
+
+    if (passwordEntered) {
+      return const HomeScreen();
+    }
+
+    const AuthStatus fakeStatus = AuthStatus.authenticated;
 
     switch (fakeStatus) {
       case AuthStatus.initial:
